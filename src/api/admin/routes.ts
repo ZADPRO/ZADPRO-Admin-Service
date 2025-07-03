@@ -173,6 +173,8 @@ export class adminRoutes implements IRoute {
             auth: false,
           },
         },
+
+        
       ]);
       resolve(true);
     });
