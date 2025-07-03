@@ -173,6 +173,17 @@ export class adminRoutes implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "GET",
+          path: "/api/v1/adminRoutes/productDropdown",
+          config: {
+            pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.productDropdown,
+            description: "productDropdown",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
 
         
       ]);

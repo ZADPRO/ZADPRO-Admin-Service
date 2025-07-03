@@ -153,8 +153,12 @@ export class adminRepository {
   }
   public async addProductsV1(userData: any, token_data: any): Promise<any> {
     const client: PoolClient = await getClient();
-    // const token = { id: token_data.id, roleId: token_data.roleId, productId:token_data.productId };
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -332,7 +336,12 @@ export class adminRepository {
   public async addNewAdminV1(userData: any, token_data: any): Promise<any> {
     console.log("userData", userData);
     const client: PoolClient = await getClient();
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
 
     const tokens = generateTokenWithExpire(token, true);
 
@@ -472,8 +481,12 @@ export class adminRepository {
   }
   public async resetPasswordV1(userData: any, token_data: any): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: token_data.id, roleId: token_data.roleId };
-    // const token = { id: token_data.id, roleId: token_data.roleId, productId:token_data.productId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -533,6 +546,7 @@ export class adminRepository {
       client.release();
     }
   }
+
   // public async listProductsV1(userData: any, token_data: any): Promise<any> {
   //   const token = { id: token_data.id, roleId: token_data.roleId };
   //   const tokens = generateTokenWithExpire(token, true);
@@ -602,10 +616,17 @@ export class adminRepository {
   //     );
   //   }
   // }
-  public async listProductsV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
-    const tokens = generateTokenWithExpire(token, true);
 
+  public async listProductsV1(userData: any, token_data: any): Promise<any> {
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+    console.log("token", token);
+
+    const tokens = generateTokenWithExpire(token, true);
     try {
       let listProducts: any[] = [];
       let listRoleType: any[] = [];
@@ -615,13 +636,16 @@ export class adminRepository {
         listRoleType = await executeQuery(listRoleTypeQuery, []);
       } else {
         listProducts = await executeQuery(listAllProductsQuery, [
-          token_data.roleId
+          // token_data.roleId,
+          token_data.productId,
+          token_data.id,
         ]);
         // You can optionally skip roleType in this case or set it to null/empty
         listRoleType = [];
       }
 
       const expireMins = 15;
+      console.log("listProducts", listProducts);
 
       const enrichedImage = await Promise.all(
         listProducts.map(async (product) => {
@@ -653,7 +677,7 @@ export class adminRepository {
           success: true,
           message: "List Products successfully",
           token: tokens,
-          Products: listProducts,
+          // Products: listProducts,
           roleType: listRoleType,
           image: enrichedImage,
         },
@@ -674,7 +698,13 @@ export class adminRepository {
   }
 
   public async allProductDataV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     const client = await getClient();
 
@@ -683,10 +713,10 @@ export class adminRepository {
       const schemaRes = await client.query(
         `
         SELECT
-  "refProductsName"
-FROM
+   "refProductsName"
+  FROM
   public."refProducts"
-WHERE
+  WHERE
   "isDelete" IS NOT true
   AND "hideStatus" IS NULL
   `
@@ -734,7 +764,7 @@ WHERE
           token: tokens,
           result: productData,
         },
-        false
+        true
       );
     } catch (error: unknown) {
       console.error("Error during list Products:", error);
@@ -745,14 +775,20 @@ WHERE
           error: error instanceof Error ? error.message : String(error),
           token: tokens,
         },
-        false
+        true
       );
     } finally {
       client.release();
     }
   }
   public async visibleAccessV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -784,7 +820,13 @@ WHERE
     }
   }
   public async updateProductV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -823,7 +865,13 @@ WHERE
     userData: any,
     token_data: any
   ): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -865,12 +913,18 @@ WHERE
   }
   public async getProductsV1(userData: any, token_data: any): Promise<any> {
     console.log("userData", userData);
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
       const Products = await executeQuery(ProductsQuery, [
-        userData.refProductsId
+        userData.refProductsId,
       ]);
       console.log("Products", Products);
       const product = Products;
@@ -932,7 +986,13 @@ WHERE
     }
   }
   public async editAdminV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const client = await getClient();
     const tokens = generateTokenWithExpire(token, true);
 
@@ -991,7 +1051,13 @@ WHERE
     }
   }
   public async listAdminV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -1021,7 +1087,13 @@ WHERE
     }
   }
   public async deleteAdminV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       const deleteAdmin = await executeQuery(deleteAdminQuery, [
@@ -1051,12 +1123,16 @@ WHERE
     }
   }
   public async getAdminV1(userData: any, token_data: any): Promise<any> {
-    const token = { id: token_data.id, roleId: token_data.roleId };
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
-      const getAdmin = await executeQuery( getAdminQuery, [
-        userData.adminID,
-      ]);
+      const getAdmin = await executeQuery(getAdminQuery, [userData.adminID]);
 
       return encrypt(
         {
@@ -1073,6 +1149,43 @@ WHERE
         {
           success: false,
           message: "An unexpected error occurred during delete get",
+          error: error instanceof Error ? error.message : String(error),
+          token: tokens,
+        },
+        true
+      );
+    }
+  }
+  public async productDropdownV1(userData: any, token_data: any): Promise<any> {
+    // const token = { id: token_data.id, roleId: token_data.roleId };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
+    console.log("token", token);
+
+    const tokens = generateTokenWithExpire(token, true);
+    try {
+      const listProducts = await executeQuery(listProductsQuery);
+      const listRoleType = await executeQuery(listRoleTypeQuery);
+
+      return encrypt(
+        {
+          success: true,
+          message: "List Products successfully",
+          token: tokens,
+          products: listProducts,
+          roleType: listRoleType,
+        },
+        true
+      );
+    } catch (error: unknown) {
+      console.error("Error during list Products:", error);
+      return encrypt(
+        {
+          success: false,
+          message: "An unexpected error occurred during list Products",
           error: error instanceof Error ? error.message : String(error),
           token: tokens,
         },

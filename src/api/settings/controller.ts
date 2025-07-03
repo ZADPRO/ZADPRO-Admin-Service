@@ -22,7 +22,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-                // productId:request.plugins.token.productId
+                 productId:request.plugins.token.productId
 
       };
       let entity;
@@ -54,7 +54,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-                // productId:request.plugins.token.productId
+                 productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.uploadBlogImageV1(request.payload, decodedToken);
@@ -85,7 +85,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-                // productId:request.plugins.token.productId
+                 productId:request.plugins.token.productId
 
       };
       let entity;
@@ -117,7 +117,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+         productId:request.plugins.token.productId
 
       };
       let entity;
@@ -149,7 +149,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+         productId:request.plugins.token.productId
 
       };
       let entity;
@@ -181,6 +181,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.addAchievementsV1(request.payload, decodedToken);
@@ -211,6 +212,7 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.updateAchievementsV1(request.payload, decodedToken);
@@ -241,6 +243,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.deleteAchievementsV1(request.payload, decodedToken);
@@ -271,6 +275,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.listAchievementsV1(request.payload, decodedToken);
@@ -301,6 +307,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.addReleaseV1(request.payload, decodedToken);
@@ -331,6 +339,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.updateReleaseV1(request.payload, decodedToken);
@@ -361,6 +371,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.deleteReleaseV1(request.payload, decodedToken);
@@ -391,6 +403,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.listReleaseV1(request.payload, decodedToken);
@@ -451,6 +465,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.updateReviewsV1(request.payload, decodedToken);
@@ -481,6 +497,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.deleteReviewsV1(request.payload, decodedToken);
@@ -511,6 +529,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.listReviewsV1(request.payload, decodedToken);
@@ -541,6 +561,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.getBlogsV1(request.payload, decodedToken);
@@ -571,6 +593,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.getReviewsV1(request.payload, decodedToken);
@@ -601,6 +625,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.getReleaseV1(request.payload, decodedToken);
@@ -631,6 +657,8 @@ export class settingsController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
+                productId:request.plugins.token.productId
+
       };
       let entity;
       entity = await this.resolver.getAchivementsV1(request.payload, decodedToken);

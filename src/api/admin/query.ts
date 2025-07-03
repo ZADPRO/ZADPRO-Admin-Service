@@ -319,39 +319,27 @@ WHERE
   ;
 
   export const listAllProductsQuery = `
-  SELECT
+SELECT
   ad."refName",
-  ARRAY_AGG(DISTINCT rp."refProductsName") AS "refProductsName"
+  ARRAY_REMOVE(ARRAY_AGG(DISTINCT rp."refProductsName"), NULL) AS "refProductsName"
 FROM
   public."adminTable" ad
-  LEFT JOIN public."refProducts" rp ON CAST(rp."refProductsId" AS INTEGER) = ANY (
+LEFT JOIN public."refProducts" rp 
+  ON CAST(rp."refProductsId" AS INTEGER) = ANY (
     string_to_array(
-      regexp_replace(
-        COALESCE(ad."refProductsId", '{}'),
-        '[{}]',
-        '',
-        'g'
-      ),
+      regexp_replace(ad."refProductsId", '[{}]', '', 'g'),
       ','
     )::INTEGER[]
   )
 WHERE
-  rp."isDelete" IS NOT true
-  AND rp."hideStatus" IS NULL
-  AND rp."refProductsId" != '6'
-  AND $1 = ANY (
-    string_to_array(
-      regexp_replace(
-        COALESCE(ad."refProductsId", '{}'),
-        '[{}]',
-        '',
-        'g'
-      ),
-      ','
-    )::INTEGER[]
+  EXISTS (
+    SELECT 1
+    FROM unnest(string_to_array(regexp_replace(ad."refProductsId", '[{}]', '', 'g'), ',')::int[]) AS t(id)
+    WHERE t.id = ANY ($1) AND ad."adminId" = $2
   )
 GROUP BY
-  ad."adminId";
+  ad."adminId", ad."refName";
+
   `;
 
   export const getAdminQuery = `

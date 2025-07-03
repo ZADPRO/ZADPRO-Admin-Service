@@ -47,7 +47,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId,
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.addProductsV1(request.payload, decodedToken);
@@ -78,7 +78,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.addNewAdminV1(request.payload, decodedToken);
@@ -135,7 +135,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.resetPasswordV1(
@@ -169,7 +169,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.listProductsV1(
@@ -203,7 +203,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.allProductDataV1(
@@ -237,7 +237,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.visibleAccessV1(
@@ -271,7 +271,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.updateProductV1(
@@ -305,7 +305,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.uploadProductLogoV1(
@@ -339,7 +339,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.getProductsV1(request.payload, decodedToken);
@@ -370,7 +370,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.editAdminV1(request.payload, decodedToken);
@@ -401,7 +401,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+        productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.listAdminV1(request.payload, decodedToken);
@@ -432,7 +432,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+         productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.deleteAdminV1(request.payload, decodedToken);
@@ -463,7 +463,7 @@ export class adminController {
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this
-        // productId:request.plugins.token.productId
+         productId:request.plugins.token.productId
       };
       let entity;
       entity = await this.resolver.getAdminV1(request.payload, decodedToken);
@@ -474,6 +474,37 @@ export class adminController {
       return response.response(entity).code(200); // Bad Request if failed
     } catch (error) {
       logger.error("Error in getAdmin", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public productDropdown = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    logger.info(`GET URL REQ => ${request.url.href}`);
+    try {
+      const decodedToken = {
+        id: request.plugins.token.id,
+        roleId: request.plugins.token.roleId, // Add this
+         productId:request.plugins.token.productId
+      };
+      let entity;
+      entity = await this.resolver.productDropdownV1(request.payload, decodedToken);
+
+      if (entity.success) {
+        return response.response(entity).code(201); // Created
+      }
+      return response.response(entity).code(200); // Bad Request if failed
+    } catch (error) {
+      logger.error("Error in productDropdown", error);
       return response
         .response({
           success: false,

@@ -17,7 +17,13 @@ import { getProductQuery } from "../user/query";
 
 export class settingRepository {
   public async addBlogsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -68,7 +74,13 @@ export class settingRepository {
     }
   }
   public async uploadBlogImageV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       const filename = userData.fileName.split(".");
@@ -115,7 +127,13 @@ export class settingRepository {
   }
   public async deleteBlogsV1(userData: any, tokendata: any): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -169,7 +187,13 @@ export class settingRepository {
     }
   }
   public async updateBlogsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -230,7 +254,13 @@ RETURNING *;
     }
   }
   public async listBlogsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -300,7 +330,13 @@ RETURNING *;
 
   // ------------------------------------
   public async addAchievementsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -360,7 +396,13 @@ RETURNING
     userData: any,
     tokendata: any
   ): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -423,7 +465,13 @@ RETURNING
     tokendata: any
   ): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -477,7 +525,13 @@ RETURNING
     }
   }
   public async listAchievementsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -519,7 +573,13 @@ RETURNING
 
   // --------------------------------------------------
   public async addReleaseV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -571,7 +631,13 @@ RETURNING
     }
   }
   public async updateReleaseV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -626,7 +692,12 @@ RETURNING
   }
   public async deleteReleaseV1(userData: any, tokendata: any): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -680,7 +751,12 @@ RETURNING
     }
   }
   public async listReleaseV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -720,7 +796,7 @@ RETURNING
   }
   // ---------------------------------------------------------------------
   public async addReviewsV1(userData: any, tokendata: any): Promise<any> {
-    // const token = { id: tokendata.id, roleId: tokendata.roleId };
+    // //const token = { id: tokendata.id, roleId: tokendata.roleId };
     // const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -775,7 +851,13 @@ RETURNING
     }
   }
   public async updateReviewsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -827,7 +909,13 @@ RETURNING
   }
   public async deleteReviewsV1(userData: any, tokendata: any): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
 
     try {
@@ -882,7 +970,13 @@ RETURNING
   }
   public async listReviewsV1(userData: any, tokendata: any): Promise<any> {
     const client: PoolClient = await getClient();
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       await client.query("BEGIN");
@@ -931,8 +1025,15 @@ RETURNING
   }
   // -------------------------------------------------
   public async getBlogsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
+
     try {
       const { refProductName, blogId } = userData;
 
@@ -969,7 +1070,13 @@ RETURNING
     }
   }
   public async getReviewsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       const { refProductName, feedbackId } = userData;
@@ -1007,7 +1114,13 @@ RETURNING
     }
   }
   public async getReleaseV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       const { refProductName, releaseId } = userData;
@@ -1045,7 +1158,13 @@ RETURNING
     }
   }
   public async getAchivementsV1(userData: any, tokendata: any): Promise<any> {
-    const token = { id: tokendata.id, roleId: tokendata.roleId };
+    //const token = { id: tokendata.id, roleId: tokendata.roleId };
+    const token = {
+      id: tokendata.id,
+      roleId: tokendata.roleId,
+      productId: tokendata.productId,
+    };
+
     const tokens = generateTokenWithExpire(token, true);
     try {
       const { refProductName, achievementId } = userData;
