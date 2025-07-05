@@ -22,7 +22,6 @@ export const generateSignupEmailContent = (
               <td>${password}</td>
             </tr>
           </table>
-          <p style="font-size: 15px;">Please log in as soon as possible and change your password for security reasons.</p>
           <p style="font-size: 15px;">If you need any help, feel free to contact our support team.</p>
           <p style="font-size: 15px;">Welcome aboard!</p>
           <p style="font-size: 15px;">Best Regards,<br/><strong>Zadroit Team</strong></p>

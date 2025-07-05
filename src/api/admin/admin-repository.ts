@@ -402,7 +402,7 @@ export class adminRepository {
         console.error("Failed to send email:", emailErr);
         // optionally: log this or insert into notification failure table
       }
-
+     
       return encrypt(
         {
           success: true,
@@ -637,7 +637,7 @@ export class adminRepository {
       } else {
         listProducts = await executeQuery(listAllProductsQuery, [
           // token_data.roleId,
-          token_data.productId,
+          // token_data.productId,
           token_data.id,
         ]);
         // You can optionally skip roleType in this case or set it to null/empty
@@ -861,11 +861,60 @@ export class adminRepository {
       );
     }
   }
+  // public async uploadProductLogoV1(
+  //   userData: any,
+  //   token_data: any
+  // ): Promise<any> {
+  //   // const token = { id: token_data.id, roleId: token_data.roleId };
+  //   const token = {
+  //     id: token_data.id,
+  //     roleId: token_data.roleId,
+  //     productId: token_data.productId,
+  //   };
+
+  //   const tokens = generateTokenWithExpire(token, true);
+
+  //   try {
+  //     const filename = userData.fileName.split(".");
+
+  //     const extention = filename[filename.length() - 1];
+
+  //     const generatedfilename = `products/${generateFileName()}.${extention}`;
+
+  //     // Generate signed URL for uploading and file view
+  //     const { upLoadUrl, fileUrl } = await createUploadUrl(
+  //       generatedfilename,
+  //       15
+  //     ); // expires in 15 mins
+
+  //     return encrypt(
+  //       {
+  //         success: true,
+  //         message: "upload Product Logo successfully",
+  //         token: tokens,
+  //         uploadUrl: upLoadUrl,
+  //         fileUrl: fileUrl,
+  //         fileName: generatedfilename,
+  //       },
+  //       true
+  //     );
+  //   } catch (error: unknown) {
+  //     console.error("Error during update Product:", error);
+  //     return encrypt(
+  //       {
+  //         success: false,
+  //         message: "An unexpected error occurred during update Product",
+  //         error: error instanceof Error ? error.message : String(error),
+  //         token: tokens,
+  //       },
+  //       true
+  //     );
+  //   }
+  // }
   public async uploadProductLogoV1(
     userData: any,
     token_data: any
   ): Promise<any> {
-    // const token = { id: token_data.id, roleId: token_data.roleId };
     const token = {
       id: token_data.id,
       roleId: token_data.roleId,
@@ -875,22 +924,34 @@ export class adminRepository {
     const tokens = generateTokenWithExpire(token, true);
 
     try {
-      const filename = userData.fileName.split(".");
+      const fileNameRaw = userData?.fileName;
 
-      const extention = filename[filename.length() - 1];
+      // ✅ Validate fileName presence and type
+      if (!fileNameRaw || typeof fileNameRaw !== "string") {
+        throw new Error("Invalid or missing fileName");
+      }
 
-      const generatedfilename = `${generateFileName()}.${extention}`;
+      const filename = fileNameRaw.split(".");
 
-      // Generate signed URL for uploading and file view
+      if (filename.length < 2) {
+        throw new Error("Invalid file name format");
+      }
+
+      // ✅ Fixed: Use filename.length without ()
+      const extention = filename[filename.length - 1] || "png"; // fallback to png if missing
+
+      const generatedfilename = `products/${generateFileName()}.${extention}`;
+
+      // ✅ Generate signed URL
       const { upLoadUrl, fileUrl } = await createUploadUrl(
         generatedfilename,
         15
-      ); // expires in 15 mins
+      );
 
       return encrypt(
         {
           success: true,
-          message: "upload Product Logo successfully",
+          message: "Upload Product Logo successfully",
           token: tokens,
           uploadUrl: upLoadUrl,
           fileUrl: fileUrl,
@@ -911,6 +972,7 @@ export class adminRepository {
       );
     }
   }
+
   public async getProductsV1(userData: any, token_data: any): Promise<any> {
     console.log("userData", userData);
     // const token = { id: token_data.id, roleId: token_data.roleId };
@@ -1164,7 +1226,6 @@ export class adminRepository {
       productId: token_data.productId,
     };
     console.log("token", token);
-
     const tokens = generateTokenWithExpire(token, true);
     try {
       const listProducts = await executeQuery(listProductsQuery);

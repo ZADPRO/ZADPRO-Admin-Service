@@ -14,6 +14,7 @@ import { generateTokenWithExpire } from "../../helper/token";
 import { CurrentTime } from "../../helper/common";
 import { createUploadUrl, getFileUrl } from "../../helper/minio";
 import { getProductQuery } from "../user/query";
+// import { checkimageQuery } from "./query";
 
 export class settingRepository {
   public async addBlogsV1(userData: any, tokendata: any): Promise<any> {
@@ -83,24 +84,47 @@ export class settingRepository {
 
     const tokens = generateTokenWithExpire(token, true);
     try {
-      const filename = userData.fileName.split(".");
+      // const filename = userData.fileName.split(".");
+      // const { productId } = userData;
+      // const getProduct = await executeQuery(getProductQuery, [productId]);
+      // const { refProductsName } = getProduct[0]; // ✅ fixed key
+
+      // console.log("filename", filename);
+
+      // const extention = filename[filename.length - 1];
+
+      // const generatedfilename = `${refProductsName}/blogs/${generateFileName()}.${extention}`;
+
+      // console.log("filename", filename);
+      // // Generate signed URL for uploading and file view
+      // const { upLoadUrl, fileUrl } = await createUploadUrl(
+      //   generatedfilename,
+      //   15
+      // ); // expires in 15 mins
+
+      const fileNameRaw = userData?.fileName ?? "";
+      if (!fileNameRaw || typeof fileNameRaw !== "string") {
+        throw new Error("Invalid or missing fileName");
+      }
+
+      const filename = fileNameRaw.split(".");
       const { productId } = userData;
+
       const getProduct = await executeQuery(getProductQuery, [productId]);
-      const { refProductsName } = getProduct[0]; // ✅ fixed key
+      console.log('getProduct', getProduct)
+      const { refProductsName } = getProduct[0] ;
 
       console.log("filename", filename);
 
-      const extention = filename[filename.length - 1];
+      const extention = filename[filename.length - 1] ?? "txt"; // fallback to txt if somehow missing
+      const generatedfilename = `${refProductsName}/blogs/${generateFileName()}.${extention}`;
 
-      const generatedfilename = `${refProductsName}/${generateFileName()}.${extention}`;
+      console.log("Generated FileName:", generatedfilename);
 
-      console.log("filename", filename);
-      // Generate signed URL for uploading and file view
       const { upLoadUrl, fileUrl } = await createUploadUrl(
         generatedfilename,
         15
-      ); // expires in 15 mins
-
+      );
       // Return success response
       return encrypt(
         {
@@ -205,7 +229,15 @@ export class settingRepository {
         blogImage,
         blogDate,
       } = userData;
-
+      const checkimageQuery = `
+SELECT
+  *
+FROM
+  "${refProductName}"."blogtable"
+WHERE
+  "blogImage" = $1
+`;
+      const checkimage = await executeQuery(checkimageQuery, [blogImage]);
       const updateBlogsQuery = `
       UPDATE "${refProductName}"."blogtable"
 SET
@@ -1046,13 +1078,42 @@ RETURNING
     "blogId" = $1
     `;
       const result = await executeQuery(getBlogsQuery, [blogId]);
+      const blogs = result;
 
+      // Enrich blogs with signed image URLs
+      const expireMins = 15;
+
+      const enrichedBlogs = await Promise.all(
+        blogs.map(async (blog) => {
+          let signedImageUrl: string | null = null;
+          if (blog.blogImage) {
+            try {
+              // Assuming blogImage is something like: assets/blogs/filename.jpeg
+              const fileName = blog.blogImage;
+              // const fileName = blog.blogImage.split("/").pop();
+              if (fileName) {
+                signedImageUrl = await getFileUrl(fileName, expireMins);
+              }
+            } catch (err) {
+              console.warn(
+                `Failed to generate signed URL for blog ID ${blog.id}`,
+                err
+              );
+            }
+          }
+
+          return {
+            ...blog,
+            signedImageUrl, // add the signed URL to the response
+          };
+        })
+      );
       return encrypt(
         {
           success: true,
           message: "list Blogs successfully",
           token: tokens,
-          result: result,
+          result: enrichedBlogs,
         },
         true
       );

@@ -136,7 +136,7 @@ WHERE
   "isDelete" IS NOT true
   AND "hideStatus" IS NULL
   AND "refProductsId" != '6'
-       `;
+    `;
 
 export const listRoleTypeQuery = `
 SELECT
@@ -200,17 +200,17 @@ WHERE
 
 export const UpdateUserQuery = `
 UPDATE
-  public."adminTable" ad
+  public."adminTable" 
 SET
-ad."refRoleId"= $2,
-ad."refProductsId" = $3,
-ad."userEmail" = $4,
-ad."refName" = $5,
-ad."refDescription"= $6,
-ad."updatedAt"= $7,
-ad."updatedBy"= $8
+"refRoleId"= $2,
+"refProductsId" = $3,
+"userEmail" = $4,
+"refName" = $5,
+"refDescription"= $6,
+"updatedAt"= $7,
+"updatedBy"= $8
 WHERE
-  ad."adminId" = $1
+  "adminId" = $1
 `;
 
 export const listAdminQuery = `
@@ -319,34 +319,62 @@ WHERE
   ;
 
   export const listAllProductsQuery = `
+WITH
+  "getProduct" AS (
+    SELECT
+      string_to_array(
+        REPLACE(REPLACE(at."refProductsId", '{', ''), '}', ''),
+        ','
+      )::int[] AS "refProductsIdArray"
+    FROM
+      public."adminTable" at
+    WHERE
+      at."adminId" = $1
+  )
 SELECT
-  ad."refName",
-  ARRAY_REMOVE(ARRAY_AGG(DISTINCT rp."refProductsName"), NULL) AS "refProductsName"
+  *
 FROM
-  public."adminTable" ad
-LEFT JOIN public."refProducts" rp 
-  ON CAST(rp."refProductsId" AS INTEGER) = ANY (
-    string_to_array(
-      regexp_replace(ad."refProductsId", '[{}]', '', 'g'),
-      ','
-    )::INTEGER[]
-  )
+  public."refProducts" rp
 WHERE
-  EXISTS (
-    SELECT 1
-    FROM unnest(string_to_array(regexp_replace(ad."refProductsId", '[{}]', '', 'g'), ',')::int[]) AS t(id)
-    WHERE t.id = ANY ($1) AND ad."adminId" = $2
+  rp."refProductsId" = ANY (
+    SELECT
+      unnest("refProductsIdArray")
+    FROM
+      "getProduct"
   )
-GROUP BY
-  ad."adminId", ad."refName";
-
+  AND rp."hideStatus" IS NULL
   `;
+//   export const listAllProductsQuery = `
+// SELECT
+//   ad."refName",
+//   ARRAY_REMOVE(ARRAY_AGG(DISTINCT rp."refProductsName"), NULL) AS "refProductsName"
+// FROM
+//   public."adminTable" ad
+// LEFT JOIN public."refProducts" rp 
+//   ON CAST(rp."refProductsId" AS INTEGER) = ANY (
+//     string_to_array(
+//       regexp_replace(ad."refProductsId", '[{}]', '', 'g'),
+//       ','
+//     )::INTEGER[]
+//   )
+// WHERE
+//   EXISTS (
+//     SELECT 1
+//     FROM unnest(string_to_array(regexp_replace(ad."refProductsId", '[{}]', '', 'g'), ',')::int[]) AS t(id)
+//     WHERE t.id = ANY ($1) AND ad."adminId" = $2
+//   )
+// GROUP BY
+//   ad."adminId", ad."refName";
+
+//   `;
 
   export const getAdminQuery = `
-  SELECT
+SELECT
   ad.*,
-  ARRAY_AGG(DISTINCT rp."refProductsName") AS "refProductsName",
-  ARRAY_AGG(DISTINCT r."refRoleName") AS "refRoleName"
+  json_agg(DISTINCT rp."refProductsId") AS "refProductsIds",
+  json_agg(DISTINCT rp."refProductsName") AS "refProductsNames",
+  json_agg(DISTINCT r."refRoleId") AS "refRoleIds",
+  json_agg(DISTINCT r."refRoleName") AS "refRoleNames"
 FROM
   public."adminTable" ad
   LEFT JOIN public."refProducts" rp ON CAST(rp."refProductsId" AS INTEGER) = ANY (
