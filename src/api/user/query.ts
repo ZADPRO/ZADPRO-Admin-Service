@@ -1,3 +1,7 @@
+import { executeQuery, getClient } from "../../helper/db";
+
+
+
 export const listProductsQuery = `
 SELECT
   *
@@ -18,3 +22,4 @@ FROM
 WHERE
   "refProductsId" = $1
 `;
+

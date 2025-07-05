@@ -60,6 +60,16 @@ export class UserRoutes implements IRoute {
             auth: false,
           },
         },
+        {
+          method: "GET",
+          path: "/api/v1/UserRoutes/status",
+          config: {
+            handler: controller.status,
+            description: "status",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
       ]);
       resolve(true);
     });

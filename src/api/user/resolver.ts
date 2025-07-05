@@ -21,5 +21,8 @@ export class UserResolver {
    public async ourProductsV1(user_data: any, token_data: any, domain_code: any,): Promise<any> {
     return await this.UserRepository.ourProductsV1(user_data, token_data, domain_code);
   }
+   public async statusV1(user_data: any, token_data: any, domain_code: any,): Promise<any> {
+    return await this.UserRepository.statusV1(user_data, token_data, domain_code);
+  }
  
 }

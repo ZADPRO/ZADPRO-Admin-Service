@@ -4,6 +4,11 @@ import path from "path";
 import { encrypt } from "../../helper/encrypt";
 import { getProductQuery, listProductsQuery } from "./query";
 import { getFileUrl } from "../../helper/minio";
+import {
+  checkDatabaseHealth,
+  checkNetworkHealth,
+  checkServerHealth,
+} from "../../helper/APIMonitor";
 
 export class UserRepository {
   public async listBlogsV1(userData: any, token_data: any): Promise<any> {
@@ -281,6 +286,33 @@ ORDER BY
         },
         true
       );
+    }
+  }
+  public async statusV1(userData: any, token_data: any): Promise<any> {
+    try {
+      const serverStatus = await checkServerHealth();
+      const dbStatus = await checkDatabaseHealth();
+      const networkStatus = await checkNetworkHealth();
+
+      const allHealthy =
+        serverStatus.success && dbStatus.success && networkStatus.success;
+
+      return {
+        success: allHealthy,
+        server: serverStatus,
+        database: dbStatus,
+        network: networkStatus,
+        message: allHealthy
+          ? "All systems are operational."
+          : "Some systems are down.",
+      };
+    } catch (error: unknown) {
+      console.error("MonitorRepository Error:", error);
+      return {
+        success: false,
+        message: "Health check failed.",
+        error: error instanceof Error ? error.message : String(error),
+      };
     }
   }
 }

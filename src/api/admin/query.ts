@@ -371,9 +371,9 @@ WHERE
   export const getAdminQuery = `
 SELECT
   ad.*,
-  json_agg(DISTINCT rp."refProductsId") AS "refProductsIds",
+  json_agg(DISTINCT CAST(rp."refProductsId" AS INTEGER)) AS "refProductsIds",
   json_agg(DISTINCT rp."refProductsName") AS "refProductsNames",
-  json_agg(DISTINCT r."refRoleId") AS "refRoleIds",
+  json_agg(DISTINCT CAST(r."refRoleId" AS INTEGER)) AS "refRoleIds",
   json_agg(DISTINCT r."refRoleName") AS "refRoleNames"
 FROM
   public."adminTable" ad
