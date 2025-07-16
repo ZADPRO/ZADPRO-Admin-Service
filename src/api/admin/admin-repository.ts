@@ -49,6 +49,7 @@ export class adminRepository {
     try {
       const params = [user_data.login];
       const users = await client.query(selectUserByLogin, params);
+      console.log("users", users);
 
       if (!users.rows || users.rows.length === 0) {
         return encrypt(
@@ -69,10 +70,25 @@ export class adminRepository {
       const checkProduct = await client.query(checkProductQuery, [
         refProductIdARRINT,
       ]);
-      console.log("checkProduct", checkProduct);
+
+      console.log("checkProduct", checkProduct.rows);
+
+      // if (
+      //   !checkProduct.rows ||
+      //   (checkProduct.rows.length === 0 && refRoleIdARRINT != `[5]`)
+      // ) {
+      //   return encrypt(
+      //     {
+      //       success: false,
+      //       message: "Could not find your product",
+      //     },
+      //     true
+      //   );
+      // }
+
       if (
         !checkProduct.rows ||
-        (checkProduct.rows.length === 0 && refRoleIdARRINT != `[5]`)
+        (checkProduct.rows.length === 0 && !refRoleIdARRINT.includes(5))
       ) {
         return encrypt(
           {
@@ -402,7 +418,7 @@ export class adminRepository {
         console.error("Failed to send email:", emailErr);
         // optionally: log this or insert into notification failure table
       }
-     
+
       return encrypt(
         {
           success: true,
@@ -652,8 +668,9 @@ export class adminRepository {
           let signedImageUrl: string | null = null;
 
           if (product.refProductLogo) {
+            console.log('product.refProductLogo', product.refProductLogo)
             try {
-              const fileName = product.refProductLogo.split("/").pop();
+              const fileName = product.refProductLogo;
               if (fileName) {
                 signedImageUrl = await getFileUrl(fileName, expireMins);
               }
@@ -736,7 +753,7 @@ export class adminRepository {
           achievements: `SELECT * FROM ${schemaQuoted}."achievements" WHERE "isDelete" IS NOT TRUE`,
           releases: `SELECT * FROM ${schemaQuoted}."newrelease" WHERE "isDelete" IS NOT TRUE`,
         };
-
+        
         const data: Record<string, any> = {};
 
         // Step 3: Execute each query, handle errors gracefully
@@ -820,6 +837,7 @@ export class adminRepository {
     }
   }
   public async updateProductV1(userData: any, token_data: any): Promise<any> {
+    console.log('userData', userData)
     // const token = { id: token_data.id, roleId: token_data.roleId };
     const token = {
       id: token_data.id,
@@ -836,8 +854,9 @@ export class adminRepository {
         userData.refProductLink,
         userData.refProductLogo,
         CurrentTime(),
-        token_data.id,
+        token_data.id
       ]);
+      console.log("updateProduct", updateProduct);
 
       return encrypt(
         {
@@ -1062,6 +1081,7 @@ export class adminRepository {
       await client.query("BEGIN");
 
       const { adminId, userEmail, refName, refDescription } = userData;
+      console.log('userData', userData)
 
       const roleId = Array.isArray(userData.roleId)
         ? `{${userData.roleId.join(",")}}`

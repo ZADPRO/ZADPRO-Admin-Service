@@ -31,7 +31,7 @@ FROM
 
 export const checkNetworkHealth = async () => {
   try {
-    const response = await axios.get("https://www.google.com", {
+    const response = await axios.get("https://medpredit.com/", {
       timeout: 3000,
     });
     return response.status === 200

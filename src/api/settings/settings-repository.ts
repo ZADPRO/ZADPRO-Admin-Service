@@ -111,8 +111,8 @@ export class settingRepository {
       const { productId } = userData;
 
       const getProduct = await executeQuery(getProductQuery, [productId]);
-      console.log('getProduct', getProduct)
-      const { refProductsName } = getProduct[0] ;
+      console.log("getProduct", getProduct);
+      const { refProductsName } = getProduct[0];
 
       console.log("filename", filename);
 
@@ -299,14 +299,17 @@ RETURNING *;
       const { refProductName } = userData;
 
       const listBlogsQuery = `
-      SELECT
-        *
-    FROM
-    "${refProductName}"."blogtable"
-    WHERE
-    "isDelete" IS NOT true
-   `;
+        SELECT
+          *
+      FROM
+      "${refProductName}"."blogtable"
+      WHERE
+      "isDelete" IS NOT true
+     `;
+
       const result = await executeQuery(listBlogsQuery);
+
+      // const result = await executeQuery(listBlogsQuery);
       const blogs = result;
 
       // Enrich blogs with signed image URLs
@@ -318,7 +321,7 @@ RETURNING *;
           if (blog.blogImage) {
             try {
               // Assuming blogImage is something like: assets/blogs/filename.jpeg
-              const fileName = blog.blogImage.split("/").pop();
+              const fileName = blog.blogImage;
               if (fileName) {
                 signedImageUrl = await getFileUrl(fileName, expireMins);
               }
@@ -360,7 +363,97 @@ RETURNING *;
     }
   }
 
-  // ------------------------------------
+  // public async listBlogsV1(userData: any, tokendata: any): Promise<any> {
+  //   const token = {
+  //     id: tokendata.id,
+  //     roleId: tokendata.roleId,
+  //     productId: tokendata.productId,
+  //   };
+  //   console.log('token', token)
+
+  //   const tokens = generateTokenWithExpire(token, true);
+
+  //   try {
+  //     let result: any[] = [];
+  //     const { refProductName } = userData;
+  //     console.log('userData', userData)
+
+  //     const listBlogsQuery = `
+  //     SELECT *
+  //     FROM "${refProductName}"."blogtable"
+  //     WHERE "isDelete" IS NOT true
+  //   `;
+
+  //     const listLimitBlogsQuery = `
+  //     WITH "getRoles" AS (
+  //       SELECT
+  //         string_to_array(REPLACE(REPLACE(at."refRoleId", '{', ''), '}', ''), ',')::int[] AS "refRoleIdArray"
+  //       FROM public."adminTable" at
+  //       WHERE at."adminId" = $1
+  //     )
+  //     SELECT *
+  //     FROM "${refProductName}"."blogtable" rp
+  //     WHERE rp."blogId" = ANY (
+  //       SELECT unnest("refRoleIdArray") FROM "getRoles"
+  //     );
+  //   `;
+
+  //     if (tokendata.roleId === 5) {
+  //       result = await executeQuery(listBlogsQuery, []);
+  //     } else {
+  //       result = await executeQuery(listLimitBlogsQuery, [tokendata.id]);
+  //     }
+  //     console.log('result', result)
+
+  //     const expireMins = 15;
+
+  //     const enrichedBlogs = await Promise.all(
+  //       result.map(async (blog) => {
+  //         let signedImageUrl: string | null = null;
+  //         if (blog.blogImage) {
+  //           try {
+  //             const fileName = blog.blogImage;
+  //             if (fileName) {
+  //               signedImageUrl = await getFileUrl(fileName, expireMins);
+  //             }
+  //           } catch (err) {
+  //             console.warn(
+  //               `Failed to generate signed URL for blog ID ${blog.blogId}`,
+  //               err
+  //             );
+  //           }
+  //         }
+
+  //         return {
+  //           ...blog,
+  //           signedImageUrl,
+  //         };
+  //       })
+  //     );
+
+  //     return encrypt(
+  //       {
+  //         success: true,
+  //         message: "List Blogs successfully",
+  //         token: tokens,
+  //         blogs: enrichedBlogs, // ✅ Renamed for clarity
+  //       },
+  //       true
+  //     );
+  //   } catch (error: unknown) {
+  //     console.log("error", error);
+  //     return encrypt(
+  //       {
+  //         success: false,
+  //         message: "An unknown error occurred during list Blogs",
+  //         token: tokens,
+  //         error: String(error),
+  //       },
+  //       true
+  //     );
+  //   }
+  // }
+
   public async addAchievementsV1(userData: any, tokendata: any): Promise<any> {
     //const token = { id: tokendata.id, roleId: tokendata.roleId };
     const token = {
@@ -882,45 +975,98 @@ RETURNING
       );
     }
   }
+  //   public async updateReviewsV1(userData: any, tokendata: any): Promise<any> {
+  //     //const token = { id: tokendata.id, roleId: tokendata.roleId };
+  //     const token = {
+  //       id: tokendata.id,
+  //       roleId: tokendata.roleId,
+  //       productId: tokendata.productId,
+  //     };
+  //     const tokens = generateTokenWithExpire(token, true);
+  //     try {
+  //       const { refProductName, refViewStatus, feedbackId } = userData;
+  //       console.log("userData", userData);
+
+  //       const updateReviewsQuery = `
+  // UPDATE
+  //   "${refProductName}"."feedBackTable"
+  // SET
+  //   "refViewStatus" = $1,
+  //   "updatedAt" = $2,
+  //   "updatedBy" = $3
+  // WHERE
+  //   "feedbackId" = $4
+  // RETURNING
+  //   *;
+  //     `;
+
+  //       const result = await executeQuery(updateReviewsQuery, [
+  //         refViewStatus,
+  //         CurrentTime(),
+  //         tokendata.id,
+  //         feedbackId
+  //       ]);
+
+  //       console.log("result", result);
+  //       return encrypt(
+  //         {
+  //           success: true,
+  //           message: "add Review successfully",
+  //           token: tokens,
+  //           result: result,
+  //         },
+  //         true
+  //       );
+  //     } catch (error: unknown) {
+  //       console.log("error", error);
+  //       return encrypt(
+  //         {
+  //           success: false,
+  //           message: "An unknown error occurred during add Review",
+  //           token: tokens,
+  //           error: String(error),
+  //         },
+  //         true
+  //       );
+  //     }
+  //   }
+
   public async updateReviewsV1(userData: any, tokendata: any): Promise<any> {
-    //const token = { id: tokendata.id, roleId: tokendata.roleId };
     const token = {
       id: tokendata.id,
       roleId: tokendata.roleId,
       productId: tokendata.productId,
     };
-
     const tokens = generateTokenWithExpire(token, true);
 
     try {
-      const { refProductName, refViewStatus, feedbackId } = userData;
+      const { refProductName, newstatus, reviewId } = userData;
       console.log("userData", userData);
 
       const updateReviewsQuery = `
-UPDATE
-  "${refProductName}"."feedBackTable"
-SET
-  "refViewStatus" = $1,
-  "updatedAt" = $2,
-  "updatedBy" = $3
-WHERE
-  "feedbackId" = $4
-RETURNING
-  *;
+      UPDATE "${refProductName}"."feedBackTable"
+      SET
+        "refViewStatus" = $1,
+        "updatedAt" = $2,
+        "updatedBy" = $3
+      WHERE
+        "feedbackId" = $4
+      RETURNING *;
     `;
 
       const result = await executeQuery(updateReviewsQuery, [
-        refViewStatus,
+        newstatus, // Correct mapping here
         CurrentTime(),
         tokendata.id,
-        feedbackId,
+        reviewId, // Correct mapping here
       ]);
 
       console.log("result", result);
+
       return encrypt(
         {
           success: true,
-          message: "add Review successfully",
+          message: "Review updated successfully",
           token: tokens,
           result: result,
         },
@@ -931,7 +1077,7 @@ RETURNING
       return encrypt(
         {
           success: false,
-          message: "An unknown error occurred during add Review",
+          message: "An unknown error occurred during review update",
           token: tokens,
           error: String(error),
         },
@@ -939,6 +1085,7 @@ RETURNING
       );
     }
   }
+
   public async deleteReviewsV1(userData: any, tokendata: any): Promise<any> {
     const client: PoolClient = await getClient();
     //const token = { id: tokendata.id, roleId: tokendata.roleId };
