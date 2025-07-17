@@ -88,7 +88,6 @@ export class settingRepository {
       // const { productId } = userData;
       // const getProduct = await executeQuery(getProductQuery, [productId]);
       // const { refProductsName } = getProduct[0]; // ✅ fixed key
-
       // console.log("filename", filename);
 
       // const extention = filename[filename.length - 1];
@@ -260,7 +259,7 @@ RETURNING *;
         blogDate,
         CurrentTime(),
         tokendata.id,
-        blogId,
+        blogId
       ]);
 
       return encrypt(
