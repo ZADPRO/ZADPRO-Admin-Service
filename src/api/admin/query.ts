@@ -38,7 +38,7 @@ FROM
     )::INTEGER[]
   )
 WHERE
-  ad."refUsername" = $1
+  ad."refUsername" = $1 AND ad."isDelete" IS NOT true
 GROUP BY
   ad."adminId";
 `;
