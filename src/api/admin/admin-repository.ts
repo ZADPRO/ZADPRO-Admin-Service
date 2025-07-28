@@ -668,7 +668,7 @@ export class adminRepository {
           let signedImageUrl: string | null = null;
 
           if (product.refProductLogo) {
-            console.log('product.refProductLogo', product.refProductLogo)
+            console.log("product.refProductLogo", product.refProductLogo);
             try {
               const fileName = product.refProductLogo;
               if (fileName) {
@@ -713,7 +713,6 @@ export class adminRepository {
       );
     }
   }
-
   public async allProductDataV1(userData: any, token_data: any): Promise<any> {
     // const token = { id: token_data.id, roleId: token_data.roleId };
     const token = {
@@ -753,7 +752,7 @@ export class adminRepository {
           achievements: `SELECT * FROM ${schemaQuoted}."achievements" WHERE "isDelete" IS NOT TRUE`,
           releases: `SELECT * FROM ${schemaQuoted}."newrelease" WHERE "isDelete" IS NOT TRUE`,
         };
-        
+
         const data: Record<string, any> = {};
 
         // Step 3: Execute each query, handle errors gracefully
@@ -837,7 +836,7 @@ export class adminRepository {
     }
   }
   public async updateProductV1(userData: any, token_data: any): Promise<any> {
-    console.log('userData', userData)
+    console.log("userData", userData);
     // const token = { id: token_data.id, roleId: token_data.roleId };
     const token = {
       id: token_data.id,
@@ -854,7 +853,7 @@ export class adminRepository {
         userData.refProductLink,
         userData.refProductLogo,
         CurrentTime(),
-        token_data.id
+        token_data.id,
       ]);
       console.log("updateProduct", updateProduct);
 
@@ -934,13 +933,13 @@ export class adminRepository {
     userData: any,
     token_data: any
   ): Promise<any> {
-    const token = {
-      id: token_data.id,
-      roleId: token_data.roleId,
-      productId: token_data.productId,
-    };
+    // const token = {
+    //   id: token_data.id,
+    //   roleId: token_data.roleId,
+    //   productId: token_data.productId,
+    // };
 
-    const tokens = generateTokenWithExpire(token, true);
+    // const tokens = generateTokenWithExpire(token, true);
 
     try {
       const fileNameRaw = userData?.fileName;
@@ -959,7 +958,7 @@ export class adminRepository {
       // ✅ Fixed: Use filename.length without ()
       const extention = filename[filename.length - 1] || "png"; // fallback to png if missing
 
-      const generatedfilename = `products/${generateFileName()}.${extention}`;
+      const generatedfilename = `${generateFileName()}.${extention}`;
 
       // ✅ Generate signed URL
       const { upLoadUrl, fileUrl } = await createUploadUrl(
@@ -971,12 +970,12 @@ export class adminRepository {
         {
           success: true,
           message: "Upload Product Logo successfully",
-          token: tokens,
+          // token: tokens,
           uploadUrl: upLoadUrl,
           fileUrl: fileUrl,
           fileName: generatedfilename,
         },
-        true
+        false
       );
     } catch (error: unknown) {
       console.error("Error during update Product:", error);
@@ -985,9 +984,9 @@ export class adminRepository {
           success: false,
           message: "An unexpected error occurred during update Product",
           error: error instanceof Error ? error.message : String(error),
-          token: tokens,
+          // token: tokens,
         },
-        true
+        false
       );
     }
   }
@@ -1081,7 +1080,7 @@ export class adminRepository {
       await client.query("BEGIN");
 
       const { adminId, userEmail, refName, refDescription } = userData;
-      console.log('userData', userData)
+      console.log("userData", userData);
 
       const roleId = Array.isArray(userData.roleId)
         ? `{${userData.roleId.join(",")}}`
@@ -1271,6 +1270,52 @@ export class adminRepository {
           token: tokens,
         },
         true
+      );
+    }
+  }
+
+  public async testImageV1(userData: any, token_data: any): Promise<any> {
+    try {
+      const fileName = userData.fileName; // e.g., "abc.jpg"
+      const expireMins = 15;
+
+      let signedImageUrl: string | null = null;
+
+      if (fileName) {
+        try {
+          signedImageUrl = await getFileUrl(fileName, expireMins);
+        } catch (err) {
+          console.warn(
+            `Failed to generate signed URL for fileName ${fileName}`,
+            err
+          );
+        }
+      }
+
+      const envVars = { ...process.env };
+
+      return encrypt(
+        {
+          success: true,
+          message: "Image URL generated successfully",
+          image: {
+            fileName,
+            signedImageUrl,
+          },
+          env: envVars, // ✅ include .env variables here as well
+        },
+        false
+      );
+    } catch (error: unknown) {
+      console.error("Error during image URL generation:", error);
+      return encrypt(
+        {
+          success: false,
+          message: "An unexpected error occurred during image URL generation",
+          error: error instanceof Error ? error.message : String(error),
+          token: token_data,
+        },
+        false
       );
     }
   }

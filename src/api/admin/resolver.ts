@@ -53,4 +53,7 @@ export class AdminResolver {
   public async productDropdownV1(user_data: any, token_data: any, domain_code: any,): Promise<any> {
     return await this.adminRepository.productDropdownV1(user_data, token_data, domain_code);
   }
+  public async testImageV1(user_data: any, token_data: any, domain_code: any,): Promise<any> {
+    return await this.adminRepository.testImageV1(user_data, token_data, domain_code);
+  }
 }

@@ -302,15 +302,15 @@ export class adminController {
   ): Promise<any> => {
     logger.info(`GET URL REQ => ${request.url.href}`);
     try {
-      const decodedToken = {
-        id: request.plugins.token.id,
-        roleId: request.plugins.token.roleId, // Add this
-        productId:request.plugins.token.productId
-      };
+      // const decodedToken = {
+      //   id: request.plugins.token.id,
+      //   roleId: request.plugins.token.roleId, // Add this
+      //   productId:request.plugins.token.productId
+      // };
       let entity;
       entity = await this.resolver.uploadProductLogoV1(
         request.payload,
-        decodedToken
+        // decodedToken
       );
 
       if (entity.success) {
@@ -498,6 +498,33 @@ export class adminController {
       };
       let entity;
       entity = await this.resolver.productDropdownV1(request.payload, decodedToken);
+
+      if (entity.success) {
+        return response.response(entity).code(201); // Created
+      }
+      return response.response(entity).code(200); // Bad Request if failed
+    } catch (error) {
+      logger.error("Error in productDropdown", error);
+      return response
+        .response({
+          success: false,
+          message:
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
+        })
+        .code(500);
+    }
+  };
+  public testImage = async (
+    request: any,
+    response: Hapi.ResponseToolkit
+  ): Promise<any> => {
+    logger.info(`GET URL REQ => ${request.url.href}`);
+    try {
+    
+      let entity;
+      entity = await this.resolver.testImageV1(request.payload);
 
       if (entity.success) {
         return response.response(entity).code(201); // Created

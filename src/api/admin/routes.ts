@@ -111,7 +111,7 @@ export class adminRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/adminRoutes/uploadProductLogo",
           config: {
-            pre: [{ method: validateToken, assign: "token" }],
+            // pre: [{ method: validateToken, assign: "token" }],
             handler: controller.uploadProductLogo,
             description: "uploadProductLogo",
             tags: ["api", "Users"],
@@ -180,6 +180,17 @@ export class adminRoutes implements IRoute {
             pre: [{ method: validateToken, assign: "token" }],
             handler: controller.productDropdown,
             description: "productDropdown",
+            tags: ["api", "Users"],
+            auth: false,
+          },
+        },
+        {
+          method: "POST",
+          path: "/api/v1/adminRoutes/testImage",
+          config: {
+            // pre: [{ method: validateToken, assign: "token" }],
+            handler: controller.testImage,
+            description: "testImage",
             tags: ["api", "Users"],
             auth: false,
           },
