@@ -977,7 +977,7 @@ export class adminRepository {
           fileUrl: fileUrl,
           fileName: generatedfilename,
         },
-        false
+        true
       );
     } catch (error: unknown) {
       console.error("Error during update Product:", error);
@@ -1313,7 +1313,7 @@ export class adminRepository {
           },
           env: envVars, // ✅ include .env variables here as well
         },
-        false
+        true
       );
     } catch (error: unknown) {
       console.error("Error during image URL generation:", error);
@@ -1324,7 +1324,7 @@ export class adminRepository {
           error: error instanceof Error ? error.message : String(error),
           token: token_data,
         },
-        false
+        true
       );
     }
   }
