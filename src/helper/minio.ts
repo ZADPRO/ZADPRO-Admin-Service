@@ -2,34 +2,13 @@ import { Client } from "minio";
 // import logger from "./logger";
 
 export const minioClient = new Client({
-  endPoint: process.env.MINIO_ENDPOINT!,
-  port: parseInt(process.env.MINIO_PORT!),
+  endPoint: process.env.MINIO_ENDPOINT!, // No https://
+  port: parseInt(process.env.MINIO_PORT!), // 443
   useSSL: process.env.MINIO_USE_SSL === "true",
   accessKey: process.env.MINIO_ACCESS_KEY!,
   secretKey: process.env.MINIO_SECRET_KEY!,
+  region: "us-east-1", // 💡 this is REQUIRED
 });
-
-// export const createUploadUrl = async (fileName: string, expireMins: number) => {
-//   try {
-//     const bucketName = process.env.MINIO_BUCKET!;
-//     const objectName = fileName;
-//     const expirySeconds = expireMins * 60;
-//     const signedUrl: string = await minioClient.presignedUrl(
-//       "PUT",
-//       bucketName,
-//       objectName,
-//       expirySeconds
-//     );
-
-//     const fileUrl = await getFileUrl(objectName, expireMins);
-//     return { upLoadUrl: signedUrl, fileUrl: fileUrl };
-//   } catch (error) {
-//     console.log("error", error);
-//     logger.info(`\n\nError IN Generating the File Upload Url \n\n`);
-
-//     return Error;
-//   }
-// };
 
 export const createUploadUrl = async (fileName: string, expireMins: number) => {
   try {
@@ -72,7 +51,10 @@ export const createUploadUrl = async (fileName: string, expireMins: number) => {
 //   }
 // };
 
-export const getFileUrl = async (fileName: string, expireMins: number): Promise<string> => {
+export const getFileUrl = async (
+  fileName: string,
+  expireMins: number
+): Promise<string> => {
   try {
     const bucketName = process.env.MINIO_BUCKET!;
     const expirySeconds = expireMins * 60;

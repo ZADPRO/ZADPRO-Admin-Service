@@ -42,6 +42,7 @@ import {
 import { sendEmail } from "../../helper/mail";
 import { custom } from "@hapi/joi";
 import { createUploadUrl, getFileUrl } from "../../helper/minio";
+import logger from "../../helper/logger";
 
 export class adminRepository {
   public async adminLoginV1(user_data: any, domain_code?: any): Promise<any> {
@@ -929,6 +930,7 @@ export class adminRepository {
   //     );
   //   }
   // }
+
   public async uploadProductLogoV1(
     userData: any,
     token_data: any
@@ -986,7 +988,7 @@ export class adminRepository {
           error: error instanceof Error ? error.message : String(error),
           // token: tokens,
         },
-        false
+        true
       );
     }
   }
@@ -1275,11 +1277,16 @@ export class adminRepository {
   }
 
   public async testImageV1(userData: any, token_data: any): Promise<any> {
+    logger.info(`1280`);
+
     try {
       const fileName = userData.fileName; // e.g., "abc.jpg"
+      logger.info(`1284`);
+
       const expireMins = 15;
 
       let signedImageUrl: string | null = null;
+      logger.info(`1289`);
 
       if (fileName) {
         try {
@@ -1291,8 +1298,10 @@ export class adminRepository {
           );
         }
       }
+      logger.info(`1301`);
 
       const envVars = { ...process.env };
+      logger.info(`1304`);
 
       return encrypt(
         {
