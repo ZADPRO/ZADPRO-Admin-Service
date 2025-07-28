@@ -3,7 +3,8 @@ import { Client } from "minio";
 
 export const minioClient = new Client({
   endPoint: process.env.MINIO_ENDPOINT!, // No https://
-  port: parseInt(process.env.MINIO_PORT!), // 443
+  port: (443), // 443
+  // port: parseInt(process.env.MINIO_PORT!), // 443
   useSSL: process.env.MINIO_USE_SSL === "true",
   accessKey: process.env.MINIO_ACCESS_KEY!,
   secretKey: process.env.MINIO_SECRET_KEY!,
