@@ -111,7 +111,7 @@ export class adminRoutes implements IRoute {
           method: "POST",
           path: "/api/v1/adminRoutes/uploadProductLogo",
           config: {
-            // pre: [{ method: validateToken, assign: "token" }],
+            pre: [{ method: validateToken, assign: "token" }],
             handler: controller.uploadProductLogo,
             description: "uploadProductLogo",
             tags: ["api", "Users"],

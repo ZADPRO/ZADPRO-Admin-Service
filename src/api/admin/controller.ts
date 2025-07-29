@@ -302,15 +302,15 @@ export class adminController {
   ): Promise<any> => {
     logger.info(`GET URL REQ => ${request.url.href}`);
     try {
-      // const decodedToken = {
-      //   id: request.plugins.token.id,
-      //   roleId: request.plugins.token.roleId, // Add this
-      //   productId:request.plugins.token.productId
-      // };
+      const decodedToken = {
+        id: request.plugins.token.id,
+        roleId: request.plugins.token.roleId, // Add this
+        productId:request.plugins.token.productId
+      };
       let entity;
       entity = await this.resolver.uploadProductLogoV1(
         request.payload,
-        // decodedToken
+        decodedToken
       );
 
       if (entity.success) {

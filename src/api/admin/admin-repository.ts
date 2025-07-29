@@ -644,6 +644,7 @@ export class adminRepository {
     console.log("token", token);
 
     const tokens = generateTokenWithExpire(token, true);
+    console.log("tokens", tokens);
     try {
       let listProducts: any[] = [];
       let listRoleType: any[] = [];
@@ -935,13 +936,13 @@ export class adminRepository {
     userData: any,
     token_data: any
   ): Promise<any> {
-    // const token = {
-    //   id: token_data.id,
-    //   roleId: token_data.roleId,
-    //   productId: token_data.productId,
-    // };
+    const token = {
+      id: token_data.id,
+      roleId: token_data.roleId,
+      productId: token_data.productId,
+    };
 
-    // const tokens = generateTokenWithExpire(token, true);
+    const tokens = generateTokenWithExpire(token, true);
 
     try {
       const fileNameRaw = userData?.fileName;
@@ -972,7 +973,7 @@ export class adminRepository {
         {
           success: true,
           message: "Upload Product Logo successfully",
-          // token: tokens,
+          token: tokens,
           uploadUrl: upLoadUrl,
           fileUrl: fileUrl,
           fileName: generatedfilename,
@@ -986,7 +987,7 @@ export class adminRepository {
           success: false,
           message: "An unexpected error occurred during update Product",
           error: error instanceof Error ? error.message : String(error),
-          // token: tokens,
+          token: tokens,
         },
         true
       );

@@ -181,6 +181,7 @@ export class settingRepository {
         CurrentTime(),
         tokendata.id,
       ]);
+      console.log('result', result)
 
       await client.query("COMMIT");
 
@@ -189,7 +190,7 @@ export class settingRepository {
           success: true,
           message: "blog deleted successfully",
           token: tokens,
-          result: result,
+          result: result.rows,
         },
         true
       );
