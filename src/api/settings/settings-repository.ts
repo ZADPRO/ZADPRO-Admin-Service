@@ -181,7 +181,7 @@ export class settingRepository {
         CurrentTime(),
         tokendata.id,
       ]);
-      console.log('result', result)
+      console.log("result", result);
 
       await client.query("COMMIT");
 
@@ -260,7 +260,7 @@ RETURNING *;
         blogDate,
         CurrentTime(),
         tokendata.id,
-        blogId
+        blogId,
       ]);
 
       return encrypt(
@@ -310,10 +310,10 @@ RETURNING *;
       const result = await executeQuery(listBlogsQuery);
 
       // const result = await executeQuery(listBlogsQuery);
-      const blogs = result;
 
       // Enrich blogs with signed image URLs
       const expireMins = 15;
+      const blogs = result;
 
       const enrichedBlogs = await Promise.all(
         blogs.map(async (blog) => {

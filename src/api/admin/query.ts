@@ -1,3 +1,5 @@
+import { executeQuery } from "../../helper/db";
+
 export const selectUserByLogin = `
   SELECT
   ad.*,
@@ -394,3 +396,5 @@ WHERE
 GROUP BY
   ad."adminId";
   `;
+
+

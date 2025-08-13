@@ -33,6 +33,8 @@ export class UserRepository {
    `;
       const result = await executeQuery(listAllBlogsQuery);
 
+    
+      // Enrich blogs with signed image URLs
       const expireMins = 15;
       const blogs = result;
 
@@ -42,7 +44,7 @@ export class UserRepository {
           if (blog.blogImage) {
             try {
               // Assuming blogImage is something like: assets/blogs/filename.jpeg
-              const fileName = blog.blogImage.split("/").pop();
+              const fileName = blog.blogImage;
               if (fileName) {
                 signedImageUrl = await getFileUrl(fileName, expireMins);
               }

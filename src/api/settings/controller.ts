@@ -146,6 +146,12 @@ export class settingsController {
   ): Promise<any> => {
     logger.info(`GET URL REQ => ${request.url.href}`);
     try {
+      // const decodedToken = {
+      //   id: 1,
+      //   roleId: 5, // Add this
+      //    productId:6
+
+      // };
       const decodedToken = {
         id: request.plugins.token.id,
         roleId: request.plugins.token.roleId, // Add this

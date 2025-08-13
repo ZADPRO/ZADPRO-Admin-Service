@@ -74,19 +74,6 @@ export class adminRepository {
 
       console.log("checkProduct", checkProduct.rows);
 
-      // if (
-      //   !checkProduct.rows ||
-      //   (checkProduct.rows.length === 0 && refRoleIdARRINT != `[5]`)
-      // ) {
-      //   return encrypt(
-      //     {
-      //       success: false,
-      //       message: "Could not find your product",
-      //     },
-      //     true
-      //   );
-      // }
-
       if (
         !checkProduct.rows ||
         (checkProduct.rows.length === 0 && !refRoleIdARRINT.includes(5))
